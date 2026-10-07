@@ -1,0 +1,62 @@
+name: OpsForge CI/CD Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test-and-build:
+    name: Lint, Test & Production Build
+    runs-on: ubuntu-latest
+
+    services:
+      mongodb:
+        image: mongo:7.0
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd "mongosh --eval 'db.runCommand({ ping: 1 })'"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      NODE_ENV: test
+      MONGODB_URI: mongodb://localhost:27017/opsforge_ci
+      JWT_SECRET: ci_test_jwt_secret_key_8492038104829103
+      CLIENT_URL: http://localhost:5173
+      SERVER_URL: http://localhost:5001
+      AI_PROVIDER: heuristic
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 22.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: 'npm'
+
+      - name: Install Root Dependencies
+        run: npm ci || npm install
+
+      - name: Install Server Dependencies
+        run: cd server && (npm ci || npm install)
+
+      - name: Install Client Dependencies
+        run: cd client && (npm ci || npm install)
+
+      - name: Run Backend Integration Test Suite
+        run: npm run test:server
+
+      - name: Run Frontend Component Test Suite
+        run: npm run test:client
+
+      - name: Compile Backend TypeScript
+        run: cd server && npm run build
+
+      - name: Build Frontend Production Assets
+        run: cd client && npm run build
