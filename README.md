@@ -188,6 +188,11 @@ Log in immediately using any of the 1-Click Demo buttons on the login page!
 
 OpsForge maintains high test coverage across both server-side integration flows and client UI components.
 
+### Run Full Verification (Tests + Production Build):
+```bash
+npm run verify
+```
+
 ### Run All Tests:
 ```bash
 npm test
@@ -195,10 +200,10 @@ npm test
 
 ### Individual Test Suites:
 ```bash
-# Run backend integration tests (Auth, Projects, Tasks, AI, RBAC):
+# Run backend integration tests (Auth, Projects, Tasks, Comments, Notifications, AI, RBAC - 26 tests):
 npm --prefix server run test
 
-# Run frontend UI tests (Components, Pages, Buttons, Forms):
+# Run frontend UI tests (Components, Pages, Buttons, Forms - 5 tests):
 npm --prefix client run test
 ```
 
@@ -221,6 +226,7 @@ Comprehensive architectural and engineering documentation is available in the [`
 
 - [**System Architecture (`docs/architecture.md`)**](docs/architecture.md) — Detailed micro-architecture, data flow, WebSocket room topology, and database schemas.
 - [**REST API Reference (`docs/api.md`)**](docs/api.md) — Complete specifications for all 35+ endpoints, request/response contracts, and status codes.
+- [**Postman Collection (`docs/opsforge.postman_collection.json`)**](docs/opsforge.postman_collection.json) — Ready-to-import Postman v2.1 collection with preconfigured auth tokens, environment variables, and request schemas.
 - [**AI Architecture & Copilot (`docs/ai.md`)**](docs/ai.md) — LLM prompt design, JSON schema enforcement, heuristic scoring formulas, and offline fallback mechanics.
 - [**Production Deployment Guide (`docs/deployment.md`)**](docs/deployment.md) — Step-by-step guides for Vercel, Render, Railway, and MongoDB Atlas.
 
