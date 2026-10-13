@@ -1,5 +1,6 @@
 import { Server as SocketIOServer } from 'socket.io';
 import { AuthenticatedSocket } from './socketAuth.js';
+import { Project } from '../models/Project.js';
 
 // In-memory registry of online users per organization
 const onlineUsers = new Map<string, Set<string>>(); // orgId -> Set of userIds
@@ -33,9 +34,19 @@ export const registerSocketHandlers = (io: SocketIOServer) => {
       });
     }
 
-    // Handle joining a project's live workspace / Kanban room
-    socket.on('project:join', (projectId: string) => {
-      socket.join(`project:${projectId}`);
+    // Handle joining a project's live workspace / Kanban room with tenant authorization
+    socket.on('project:join', async (projectId: string) => {
+      try {
+        if (!projectId || !orgId) return;
+        const project = await Project.findOne({ _id: projectId, organization: orgId }).select('_id');
+        if (project) {
+          socket.join(`project:${projectId}`);
+        } else {
+          socket.emit('error', { message: 'Unauthorized project room access' });
+        }
+      } catch (err) {
+        socket.emit('error', { message: 'Invalid project ID' });
+      }
     });
 
     // Handle leaving a project room

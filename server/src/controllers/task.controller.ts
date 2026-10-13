@@ -198,6 +198,12 @@ export const updateTask = async (
       return;
     }
 
+    // Role check: Members can only update tasks assigned to them
+    if (req.user?.role === 'member' && task.assignee?.toString() !== req.user.id) {
+      sendError(res, 'Members can only update tasks assigned to them', 403);
+      return;
+    }
+
     const previousAssignee = task.assignee?.toString();
     const previousStatus = task.status;
     const updates = req.body;
@@ -282,6 +288,12 @@ export const updateTaskStatus = async (
       return;
     }
 
+    // Role check: Members can only update status for tasks assigned to them
+    if (req.user?.role === 'member' && task.assignee?.toString() !== req.user.id) {
+      sendError(res, 'Members can only update status for tasks assigned to them', 403);
+      return;
+    }
+
     const oldStatus = task.status;
     task.status = status;
     task.order = newOrder;
@@ -344,11 +356,27 @@ export const deleteTask = async (
     const { id } = req.params;
     const orgId = req.user?.organization;
 
-    const task = await Task.findOneAndDelete({ _id: id, organization: orgId });
+    const task = await Task.findOne({ _id: id, organization: orgId });
     if (!task) {
       sendError(res, 'Task not found', 404);
       return;
     }
+
+    if (req.user?.role === 'member') {
+      sendError(res, 'Members do not have permission to delete tasks', 403);
+      return;
+    }
+
+    if (
+      req.user?.role === 'developer' &&
+      task.creator.toString() !== req.user.id &&
+      task.assignee?.toString() !== req.user.id
+    ) {
+      sendError(res, 'Developers can only delete tasks created by or assigned to them', 403);
+      return;
+    }
+
+    await task.deleteOne();
 
     await logActivity({
       organization: orgId!,

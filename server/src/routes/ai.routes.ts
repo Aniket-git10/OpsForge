@@ -24,6 +24,7 @@ router.post('/generate-tasks', validateRequest(generateTasksSchema), generateTas
 router.post('/generate-subtasks', validateRequest(generateSubtasksSchema), generateSubtasks);
 router.post('/prioritize-tasks', validateRequest(prioritizeTasksSchema), prioritizeTasks);
 router.post('/summarize-project', validateRequest(summarizeProjectSchema), summarizeProject);
+router.get('/insights', generateProductivityInsights);
 router.post(
   '/insights',
   validateRequest(generateInsightsSchema),

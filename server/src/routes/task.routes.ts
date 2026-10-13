@@ -11,6 +11,7 @@ import {
   deleteSubtask,
 } from '../controllers/task.controller.js';
 import { authenticateJWT } from '../middleware/auth.js';
+import { requireRole } from '../middleware/roleGuard.js';
 import { validateRequest } from '../middleware/validate.js';
 import {
   createTaskSchema,
@@ -28,11 +29,16 @@ router.use(authenticateJWT);
 router.get('/project/:projectId', getProjectTasks);
 
 // Task CRUD
-router.post('/', validateRequest(createTaskSchema), createTask);
+router.post(
+  '/',
+  requireRole(['admin', 'project_manager', 'developer']),
+  validateRequest(createTaskSchema),
+  createTask
+);
 router.get('/:id', getTaskById);
 router.patch('/:id', validateRequest(updateTaskSchema), updateTask);
 router.patch('/:id/status', validateRequest(updateTaskStatusSchema), updateTaskStatus);
-router.delete('/:id', deleteTask);
+router.delete('/:id', requireRole(['admin', 'project_manager', 'developer']), deleteTask);
 
 // Subtasks
 router.post('/:id/subtasks', validateRequest(addSubtaskSchema), addSubtask);
