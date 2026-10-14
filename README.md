@@ -3,7 +3,7 @@
 > **Build better. Ship smarter.**  
 > A production-grade, AI-powered developer and team productivity platform engineered for agile sprint planning, real-time Kanban collaboration, workload analytics, and intelligent project decomposition.
 
-[![CI Status](https://github.com/your-username/opsforge/actions/workflows/ci.yml/badge.svg)](https://github.com/your-username/opsforge/actions)
+[![CI Status](https://github.com/Aniket-git10/OpsForge/actions/workflows/ci.yml/badge.svg)](https://github.com/Aniket-git10/OpsForge/actions)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue.svg?logo=typescript)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-18.3-61DAFB.svg?logo=react)](https://react.dev/)
 [![Node.js](https://img.shields.io/badge/Node.js-18%2B-green.svg?logo=node.js)](https://nodejs.org/)
@@ -138,8 +138,8 @@ opsforge/
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/your-username/opsforge.git
-cd opsforge
+git clone https://github.com/Aniket-git10/OpsForge.git
+cd OpsForge
 ```
 
 ### 2. Install All Dependencies
@@ -200,7 +200,7 @@ npm test
 
 ### Individual Test Suites:
 ```bash
-# Run backend integration tests (Auth, Projects, Tasks, Comments, Notifications, AI, RBAC - 26 tests):
+# Run backend integration tests (Auth, Projects, Tasks, Comments, Notifications, AI, RBAC - 33 tests):
 npm --prefix server run test
 
 # Run frontend UI tests (Components, Pages, Buttons, Forms - 5 tests):
@@ -222,8 +222,9 @@ This builds an optimized production container serving the compiled Express API a
 
 ## 📚 Detailed Documentation
 
-Comprehensive architectural and engineering documentation is available in the [`docs/`](docs/) directory:
+Comprehensive architectural, testing, and engineering documentation is available in the [`docs/`](docs/) directory:
 
+- [**Comprehensive QA & Security Audit Report (`docs/FINAL_QA_REPORT.md`)**](docs/FINAL_QA_REPORT.md) — Complete 12-phase rigorous quality assurance, penetration testing, and verification audit.
 - [**System Architecture (`docs/architecture.md`)**](docs/architecture.md) — Detailed micro-architecture, data flow, WebSocket room topology, and database schemas.
 - [**REST API Reference (`docs/api.md`)**](docs/api.md) — Complete specifications for all 35+ endpoints, request/response contracts, and status codes.
 - [**Postman Collection (`docs/opsforge.postman_collection.json`)**](docs/opsforge.postman_collection.json) — Ready-to-import Postman v2.1 collection with preconfigured auth tokens, environment variables, and request schemas.
